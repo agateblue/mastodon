@@ -22,6 +22,7 @@ class ResolveURLService < BaseService
       FetchRemoteAccountService.new.call(resource_url, body, protocol)
     elsif equals_or_includes_any?(type, ActivityPub::Activity::Create::SUPPORTED_TYPES + ActivityPub::Activity::Create::CONVERTED_TYPES)
       status = FetchRemoteStatusService.new.call(resource_url, body, protocol)
+      Rails.logger.info("Rejected HELLO #{@on_behalf_of}")
       authorize_with @on_behalf_of, status, :show? unless status.nil?
       status
     elsif fetched_resource.nil? && @on_behalf_of.present?

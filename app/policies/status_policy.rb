@@ -12,6 +12,7 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def show?
+
     if requires_mention?
       owned? || mention_exists?
     elsif private?
@@ -42,6 +43,7 @@ class StatusPolicy < ApplicationPolicy
   private
 
   def requires_mention?
+    Rails.logger.info("PUNDIT, #{record.visibility}")
     record.direct_visibility? || record.limited_visibility?
   end
 
